@@ -12,6 +12,7 @@ app.get('/login', function(req,res){
 
 app.post('/welcome', function(req,res){
 	res.sendfile(path.resolve(__dirname+'/../HTML/Welcome.html'))
+	
 })
 
 app.listen(8080, function() {
