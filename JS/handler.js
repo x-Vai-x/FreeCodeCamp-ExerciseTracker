@@ -10,7 +10,7 @@ app.get('/login', function(req,res){
 	res.sendfile(path.resolve(__dirname+'/../HTML/ExistingUser.html'))
 })
 
-app.post('/welcome/:userId', function(req,res){
+app.post('/welcome', function(req,res){
 	res.sendfile(path.resolve(__dirname+'/../HTML/Welcome.html'))
 })
 
