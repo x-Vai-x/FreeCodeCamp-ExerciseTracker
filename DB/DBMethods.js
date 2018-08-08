@@ -17,15 +17,12 @@ module.exports.findUser = async function(userID){
 
 }
 
-module.exports.findUserObjectId = async function(userID){
-	const user=await this.findUser(userID)
-	return user[0]._id
-}
+
 
 module.exports.saveExercise=async function(userID, description, duration, date){
 	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
 
-	if(userID!=undefined){
+	
 		
 		const users=await this.findUser(userID)
 		if(users.length==1){
@@ -36,9 +33,6 @@ module.exports.saveExercise=async function(userID, description, duration, date){
 			user.Exercises.push(exercise._id)
 			await user.save()
 			console.log("user updated")
-		}else{
-			
-			console.log("user doesn't exist")
 		}
 		
 	
@@ -47,9 +41,16 @@ module.exports.saveExercise=async function(userID, description, duration, date){
 
 	
 
+
+module.exports.findExercises= async function(userID){
+	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
+
+	const user=await UserModel.find({UserId: userID}).populate('Exercises')
+	return user[0].Exercises
 }
 
-this.saveExercise("abc", "desc", 1, new Date())
+
+
 
 
 
