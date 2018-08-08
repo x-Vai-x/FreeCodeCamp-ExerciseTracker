@@ -22,16 +22,22 @@ app.get('/login', function(req,res){
 app.post('/welcome', function(req,res){
 	userId=req.body.userId
 
-	if(userId!=undefined){
+	if(userId==""){
+		alert("Please enter your userId")
+	}
+	else if(userId!=undefined){
 		res.sendfile(path.resolve(__dirname+'/../HTML/Welcome.html'))
-	}	
+	}	else{
+		res.status("404")
+		res.send("404 forbidden!")
+	}
 	
 
 })
 
 app.get('/logout', function(req,res){
 	userId=undefined
-	res.sendfile(path.resolve(__dirname+'/../HTML/Index.html'))
+	res.redirect('/')
 })
 
 app.get('/', function(req,res){
