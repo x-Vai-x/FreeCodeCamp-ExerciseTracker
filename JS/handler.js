@@ -4,7 +4,7 @@ const path = require('path')
 
 const dialog = require('dialog')
 
-const {saveUser, findUser} = require('../DB/DBMethods')
+const {saveUser, findUser, saveExercise} = require('../DB/DBMethods')
 
 
 app.use(express.static(path.resolve(__dirname+ '/../css/')))
@@ -98,7 +98,9 @@ app.get('/new', function(req, res){
 	
 })
 
-app.post('')
+app.post('/create',function(req, res){
+	saveExercise(req.body.description, req.body.duration, req.body.date)
+})
 
 app.get('/list', function(req, res){
 	res.sendFile(path.resolve(__dirname+'/../HTML/myExercise.html'))

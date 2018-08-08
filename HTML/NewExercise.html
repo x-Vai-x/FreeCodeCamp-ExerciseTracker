@@ -15,24 +15,24 @@
 
 			<main class="column">
 
-				<form class="column">
+				<form class="column" action="/create" method="post">
 					<section class="row">
 						<label for = "description">Description:</label>
-						<input type="text" id="description" placeholder="Enter description.">
+						<input type="text" id="description" name="description" placeholder="Enter description.">
 					</section>
 
 					<br>
 
 					<section class="row">
 						<label for = "duration"> Duration (minutes): </label>
-						<input type="number" id="duration" placeholder="Enter duration.">
+						<input type="number" id="duration" name="duration" placeholder="Enter duration.">
 					</section>
 
 					<br>
 
 					<section class="row">
 						<label for="date"> Date: </label>
-						<input type="date" id="date">
+						<input type="date" name="date" id="date">
 					</section>
 
 					<br>
