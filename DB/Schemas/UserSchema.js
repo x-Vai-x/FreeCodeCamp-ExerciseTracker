@@ -7,7 +7,10 @@ const Schema=mongoose.Schema
 const UserSchema=new Schema({
 	UserId: {
 		type: String,
-		required: true
+		index: true,
+		unique: true,
+		required: true,
+
 	}
 	
 
