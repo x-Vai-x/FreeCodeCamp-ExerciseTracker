@@ -2,6 +2,8 @@ const express=require('express')
 const app = express()
 const path = require('path')
 
+const dialog = require('dialog')
+
 const {saveUser, findUser} = require('../DB/DBMethods')
 
 
@@ -33,13 +35,40 @@ app.post('/welcome_new', function(req,res){
    			if(ans.length==0){
    				saveUser(userId)
    				res.redirect('/welcome')
+   			}else{
+   				dialog.info("Name is already taken")
+   				res.redirect('/register')
    			}
    		})
    		
 		
 	}	
+
 	else{
-		res.redirect("/register")
+		dialog.info("User Id required to proceed.")
+   	    res.redirect('/register')
+	}
+	
+	
+
+})
+
+app.post('/welcome_existing', function(req,res){
+   userId=req.body.userId
+
+   if(userId!=undefined&&userId!=""){
+   		findUser(userId).then(ans=>{
+   			if(ans.length==1){
+   				res.redirect('/welcome')
+   			}else{
+   				dialog.info("User id doesn't exist.")
+   			}
+   		})	
+		
+	}	
+	else{
+		dialog.info("User id  required to proceed.")
+		res.redirect("/login")
 		
 	}
 	
