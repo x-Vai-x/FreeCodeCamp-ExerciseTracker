@@ -10,8 +10,11 @@ const UserSchema=new Schema({
 		index: true,
 		unique: true,
 		required: true,
+	}, 
 
-	}
+	Exercises: [{
+		type: Schema.Types.ObjectId, ref: 'Exercise'
+	}]
 	
 
 })
