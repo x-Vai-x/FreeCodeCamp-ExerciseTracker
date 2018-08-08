@@ -91,7 +91,7 @@ app.get('/new', function(req, res){
 })
 
 app.get('/list', function(req, res){
-
+	res.sendFile(path.resolve(__dirname+'/../HTML/myExercise.html'))
 })
 
 app.get('/logout', function(req,res){
