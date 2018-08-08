@@ -4,6 +4,7 @@
 
 	<head>
 		<title> Welcome </title>
+		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 
 	<body>
@@ -11,24 +12,15 @@
 			<h1> Welcome to the exercise tracker! </h1>
 		</header>
 
-		<main>
+		<main class="column">
 
-			<nav>
-			<a href='/logout'>Logout </a> 
+			<nav class="column">
+			<a href='/logout'>Logout </a>
+			<a href='/new'>Add new </a>
+			<a href='/list'>List exercises </a> 
 			</nav>
 
-			<form>
-				<label for = "description">Description:</label>
-				<input type="text" id="description" placeholder="Enter description.">
-
-				<label for = "duration"> Duration: </label>
-				<input type="number" id="duration" placeholder="Please enter duration in minutes.">
-
-				<label for="date"> Date: </label>
-				<input type="date" id="date">
-
-				<input type="submit" value="submit">
-			</form>
+		
 			
 		</main>
 	</body>

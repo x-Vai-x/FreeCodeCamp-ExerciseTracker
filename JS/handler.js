@@ -1,6 +1,10 @@
 const express=require('express')
 const app = express()
 const path = require('path')
+const JSAlert = require("js-alert")
+
+app.use(express.static(path.resolve(__dirname+ '/../css/')))
+
 
 const bodyParser=require('body-parser')
 
@@ -12,22 +16,20 @@ app.use(bodyParser.urlencoded({
 let userId=undefined
 
 app.get('/register',function(req, res) {
-	res.sendfile(path.resolve(__dirname+'/../HTML/NewUser.html'))
+	res.sendFile(path.resolve(__dirname+'/../HTML/NewUser.html'))
 })
 
 app.get('/login', function(req,res){
-	res.sendfile(path.resolve(__dirname+'/../HTML/ExistingUser.html'))
+	res.sendFile(path.resolve(__dirname+'/../HTML/ExistingUser.html'))
 })
 
 app.post('/welcome', function(req,res){
 	userId=req.body.userId
 
-	if(userId==""){
-		alert("Please enter your userId")
-	}
-	else if(userId!=undefined){
-		res.sendfile(path.resolve(__dirname+'/../HTML/Welcome.html'))
-	}	else{
+   if(userId!=undefined){
+		res.sendFile(path.resolve(__dirname+'/../HTML/Welcome.html'))
+	}	
+	else{
 		res.status("404")
 		res.send("404 forbidden!")
 	}
@@ -35,13 +37,22 @@ app.post('/welcome', function(req,res){
 
 })
 
+app.get('/new', function(req, res){
+	res.sendFile(path.resolve(__dirname+'/../HTML/NewExercise.html'))
+})
+
+app.get('/list', function(req, res){
+
+})
+
 app.get('/logout', function(req,res){
 	userId=undefined
 	res.redirect('/')
+
 })
 
 app.get('/', function(req,res){
-	res.sendfile(path.resolve(__dirname+'/../HTML/Index.html'))
+	res.sendFile(path.resolve(__dirname+'/../HTML/Index.html'))
 })
 
 app.listen(8080, function() {

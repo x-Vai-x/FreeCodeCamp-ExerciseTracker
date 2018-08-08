@@ -9,10 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "alert-node": "^1.2.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "js-alert": "^1.0.4",
     "mongodb": "^3.1.1",
     "mongoose": "^5.2.7",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "popups": "^1.1.3"
   }
 }
