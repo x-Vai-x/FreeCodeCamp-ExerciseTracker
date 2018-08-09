@@ -4,7 +4,7 @@ const path = require('path')
 
 const dialog = require('dialog')
 
-const {saveUser, findUser, saveExercise} = require('../DB/DBMethods')
+const {saveUser, findUser, saveExercise, find10Exercises} = require('../DB/DBMethods')
 
 
 app.use(express.static(path.resolve(__dirname+ '/../css/')))
@@ -124,6 +124,13 @@ app.get('/logout', function(req,res){
 app.get('/', function(req,res){
 	res.sendFile(path.resolve(__dirname+'/../HTML/Index.html'))
 })
+
+module.exports.find10Exercises = async function(from){
+	const exercises=await find10Exercises(userId, from)
+	return exercises
+}
+
+
 
 app.listen(8080, function() {
 	console.log("Listening on port 8080")
