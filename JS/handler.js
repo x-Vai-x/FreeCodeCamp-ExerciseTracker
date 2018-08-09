@@ -112,13 +112,14 @@ app.get('/myExercise', function(req, res){
 	if(userId!=undefined){
 		res.sendFile(path.resolve(__dirname+'/../HTML/MyExercise.html'))
 
+		
+
 	}
 })
 
 app.get('/logout', function(req,res){
 	userId=undefined
 	res.redirect('/')
-
 })
 
 app.get('/', function(req,res){
