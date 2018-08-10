@@ -4,7 +4,7 @@ const path = require('path')
 
 const dialog = require('dialog')
 
-const {saveUser, findUser, saveExercise, findExercises} = require('../DB/DBMethods')
+const {saveUser, findUser, saveExercise, findExercises} = require('./DB/DBMethods')
 
 
 app.use(express.static(path.resolve(__dirname+ '/public/')))
