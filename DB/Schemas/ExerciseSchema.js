@@ -18,6 +18,11 @@ const ExerciseSchema=new Schema({
 	Date: {
 		type: Date,
 		required: true
+	}, 
+
+	User: {
+		type: Schema.Types.ObjectId, 
+		ref: 'User'
 	}
 	
 
