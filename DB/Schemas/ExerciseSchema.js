@@ -22,7 +22,8 @@ const ExerciseSchema=new Schema({
 
 	User: {
 		type: Schema.Types.ObjectId, 
-		ref: 'User'
+		ref: 'User',
+		required: true
 	}
 	
 
