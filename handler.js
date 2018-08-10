@@ -103,6 +103,8 @@ app.get('/new', function(req, res){
 app.post('/create',async function(req, res){
 	if(userId!=undefined){
 		await saveExercise(userId, req.body.description, req.body.duration, req.body.date)
+		dialog.info("New record created")
+		res.end()
 
 	}else{
 		res.status(404)
@@ -123,8 +125,9 @@ app.get('/myExercise', async function(req, res){
 
 app.get('/Exercise/:id', async function(req,res){
 
-	if(userId!=undefined){
-		const exercise=await getExerciseById(req.params.id)
+	const exercise=await getExerciseById(req.params.id, userId)
+	if(userId!=undefined && exercise!=undefined){
+		
 		res.render('Exercise', {Exercise: exercise})
 	}else{
 		res.status(404)
@@ -140,7 +143,12 @@ app.get('/logout', function(req,res){
 })
 
 app.get('/', function(req,res){
-	res.sendFile(path.resolve(__dirname+'/HTML/Index.html'))
+	if(userId==undefined){
+		res.sendFile(path.resolve(__dirname+'/HTML/Index.html'))
+	}else{
+		res.redirect('/welcome')
+	}
+	
 })
 
 async function find10Exercises(from){
