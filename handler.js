@@ -29,12 +29,12 @@ app.get('/login', function(req,res){
 	res.sendFile(path.resolve(__dirname+'/HTML/ExistingUser.html'))
 })
 
-app.post('/welcome_new', function(req,res){
+app.post('/welcome_new', async function(req,res){
 	
 
    if(req.body.userId!=undefined&&req.body.userId!=""){
-   		findUser(req.body.userId).then(ans=>{
-   			if(ans.length==0){
+   		const user = await findUser(req.body.userId)
+   			if(user.length==0){
    				userId=req.body.userId
    				saveUser(userId)
    				res.redirect('/welcome')
@@ -42,7 +42,7 @@ app.post('/welcome_new', function(req,res){
    				dialog.info("Name is already taken")
    				res.redirect('/register')
    			}
-   		})
+   		
    		
 		
 	}	
@@ -56,18 +56,18 @@ app.post('/welcome_new', function(req,res){
 
 })
 
-app.post('/welcome_existing', function(req,res){
+app.post('/welcome_existing', async function(req,res){
    
 
    if(req.body.userId!=undefined&&req.body.userId!=""){
-   		findUser(req.body.userId).then(ans=>{
-   			if(ans.length==1){
+   		const users= await findUser(req.body.userId)
+   			if(users.length==1){
    				userId=req.body.userId
    				res.redirect('/welcome')
    			}else{
    				dialog.info("User id doesn't exist.")
    			}
-   		})	
+   			
 		
 	}	
 	else{
@@ -100,9 +100,10 @@ app.get('/new', function(req, res){
 	
 })
 
-app.post('/create',function(req, res){
+app.post('/create',async function(req, res){
 	if(userId!=undefined){
-		saveExercise(req.body.description, req.body.duration, req.body.date)
+		await saveExercise(userId, req.body.description, req.body.duration, req.body.date)
+
 	}else{
 		res.status(404)
 		res.send("<h1>404 forbidden!</h1>")
