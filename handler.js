@@ -9,6 +9,8 @@ const {saveUser, findUser, saveExercise, findExercises} = require('./DB/DBMethod
 
 app.use(express.static(path.resolve(__dirname+ '/public/')))
 
+app.set('view engine', 'ejs')
+
 
 const bodyParser=require('body-parser')
 
@@ -131,6 +133,8 @@ module.exports.find10Exercises = async function(from){
 	const exercises=await findExercises(userId)
 	return exercises.slice(from, from+10)
 }
+
+
 
 
 
