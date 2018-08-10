@@ -9,8 +9,13 @@ const UserSchema=new Schema({
 		type: String,
 		index: true,
 		unique: true,
-		required: true,
+		required: true
 	}, 
+
+	Password: {
+		type: String,
+		required: true
+	},
 
 	Exercises: [{
 		type: Schema.Types.ObjectId, ref: 'Exercise'

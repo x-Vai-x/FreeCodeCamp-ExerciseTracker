@@ -3,17 +3,24 @@ const mongoose = require('mongoose')
 const {UserModel} = require('./Schemas/UserSchema')
 const {ExerciseModel} = require('./Schemas/ExerciseSchema')
 
-module.exports.saveUser= async function(userID){
+module.exports.saveUser= async function(userID, password){
 	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
-	const user=new UserModel({UserId: userID, Exercises: []})
+	const user=new UserModel({UserId: userID, Password: password, Exercises: []})
 	await user.save()
-	console.log("user saved").catch(err=>{console.log(err)})
+	console.log("user saved")
 }
 
 module.exports.findUser = async function(userID){
 	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
 	const users= await UserModel.find({UserId: userID}).populate('Exercises')
 	return users
+}
+
+module.exports.validatePassword = async function(userID, password){
+
+	const users=await module.exports.findUser(userID)
+	const user=users[0]
+	return user.Password==password
 }
 
 
