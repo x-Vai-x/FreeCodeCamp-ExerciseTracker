@@ -49,6 +49,12 @@ module.exports.findExercises=async function(userID){
 	return user[0].Exercises
 }
 
+module.exports.getExerciseById=async function(id){
+	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
+	const exercise = await ExerciseModel.findById(id)
+	return exercise
+}
+
 
 
 

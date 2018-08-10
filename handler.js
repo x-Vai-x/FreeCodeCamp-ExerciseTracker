@@ -4,7 +4,7 @@ const path = require('path')
 
 const dialog = require('dialog')
 
-const {saveUser, findUser, saveExercise, findExercises} = require('./DB/DBMethods')
+const {saveUser, findUser, saveExercise, findExercises, getExerciseById} = require('./DB/DBMethods')
 
 
 app.use(express.static(path.resolve(__dirname+ '/public/')))
@@ -118,6 +118,19 @@ app.get('/myExercise', async function(req, res){
 		
 
 	}
+})
+
+app.get('/Exercise/:id', async function(req,res){
+
+	if(userId!=undefined){
+		const exercise=await getExerciseById(req.params.id)
+		res.render('Exercise', {Exercise: exercise})
+	}else{
+		res.status(404)
+		res.send("<h1>404 forbidden!</h1>")
+	}
+	
+
 })
 
 app.get('/logout', function(req,res){
