@@ -2,12 +2,9 @@ const express=require('express')
 const app = express()
 const path = require('path')
 
-const mongoose=require('mongoose')
-
-
 const dialog = require('dialog')
 
-const {saveUser, findUser, saveExercise} = require('./DB/DBMethods')
+const {saveUser, findUser, saveExercise, findExercises} = require('../DB/DBMethods')
 
 
 app.use(express.static(path.resolve(__dirname+ '/public/')))
@@ -23,12 +20,10 @@ app.use(bodyParser.urlencoded({
 let userId=undefined
 
 app.get('/register',function(req, res) {
-	mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
 	res.sendFile(path.resolve(__dirname+'/HTML/NewUser.html'))
 })
 
 app.get('/login', function(req,res){
-	mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
 	res.sendFile(path.resolve(__dirname+'/HTML/ExistingUser.html'))
 })
 
@@ -94,7 +89,6 @@ app.get('/welcome',function(req, res){
 })
 
 app.get('/new', function(req, res){
-
 	if(userId!=undefined){
 		res.sendFile(path.resolve(__dirname+'/HTML/NewExercise.html'))
 	}else{
@@ -118,11 +112,8 @@ app.get('/myExercise', function(req, res){
 	if(userId!=undefined){
 		res.sendFile(path.resolve(__dirname+'/HTML/MyExercise.html'))
 
+		
 
-
-	}else{
-		res.status(404)
-		res.send("<h1>404 forbidden!</h1>")
 	}
 })
 
@@ -132,12 +123,12 @@ app.get('/logout', function(req,res){
 })
 
 app.get('/', function(req,res){
-	mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
 	res.sendFile(path.resolve(__dirname+'/HTML/Index.html'))
 })
 
- async function find10ExercisesFromPoint(from){
-	const exercises=await findExercises(userID)
+module.exports.find10Exercises = async function(from){
+
+	const exercises=await findExercises(userId)
 	return exercises.slice(from, from+10)
 }
 
