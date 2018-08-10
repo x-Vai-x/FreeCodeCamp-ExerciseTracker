@@ -110,10 +110,11 @@ app.post('/create',function(req, res){
 	
 })
 
-app.get('/myExercise', function(req, res){
+app.get('/myExercise', async function(req, res){
 	if(userId!=undefined){
-		res.render('MyExercise')
-
+		
+		const exercises=await find10Exercises(0)
+		res.render('MyExercise', {Exercises: exercises})
 		
 
 	}
@@ -128,7 +129,7 @@ app.get('/', function(req,res){
 	res.sendFile(path.resolve(__dirname+'/HTML/Index.html'))
 })
 
-module.exports.find10Exercises = async function(from){
+async function find10Exercises(from){
 
 	const exercises=await findExercises(userId)
 	return exercises.slice(from, from+10)

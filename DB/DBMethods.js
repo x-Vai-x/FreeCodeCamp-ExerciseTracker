@@ -42,7 +42,7 @@ module.exports.saveExercise=async function(userID, description, duration, date){
 	
 
 
-async function findExercises(userID){
+module.exports.findExercises=async function(userID){
 	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
 
 	const user=await UserModel.find({UserId: userID}).populate('Exercises')
