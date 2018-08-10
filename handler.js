@@ -10,7 +10,7 @@ const {saveUser, findUser, saveExercise, findExercises} = require('./DB/DBMethod
 app.use(express.static(path.resolve(__dirname+ '/public/')))
 
 app.set('view engine', 'ejs')
-
+app.set('views', path.resolve(__dirname+'/HTML'))
 
 const bodyParser=require('body-parser')
 
@@ -112,7 +112,7 @@ app.post('/create',function(req, res){
 
 app.get('/myExercise', function(req, res){
 	if(userId!=undefined){
-		res.sendFile(path.resolve(__dirname+'/HTML/MyExercise.html'))
+		res.render('MyExercise')
 
 		
 
