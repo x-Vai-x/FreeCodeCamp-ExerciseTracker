@@ -73,6 +73,16 @@ module.exports.getExerciseById=async function(id, userID){
 
 }
 
+module.exports.deleteExerciseById=async function(id, userID){
+	const exercise = await module.exports.getExerciseById(id, userID)
+	if(exercise!=undefined){
+		await ExerciseModel.remove({_id: id})
+		return true
+	}else{
+		return false
+	}
+
+}
 
 
 
