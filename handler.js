@@ -41,11 +41,17 @@ app.get('/login', function(req,res){
 
 app.post('/welcome_new', async function(req,res){
 	
+ 	if(userId!=undefined&&userId!=""){
+   		dialog.info("You are already logged in.")
+   		res.redirect('/welcome')
+   	}
 
-   if(req.body.userId!=undefined&&req.body.userId!="" &&req.body.password!=undefined&&req.body.password!=""){
-   		userId=req.body.userId
-   		const user = await findUser(userId)
+
+   else if(req.body.userId!=undefined&&req.body.userId!="" &&req.body.password!=undefined&&req.body.password!=""){
+   		
+   		const user = await findUser(req.body.userId)
    			if(user.length==0){
+   				userId=req.body.userId
    				const password=req.body.password
    				saveUser(userId, password)
    				res.redirect('/welcome')
@@ -69,11 +75,16 @@ app.post('/welcome_new', async function(req,res){
 
 app.post('/welcome_existing', async function(req,res){
    
+   if(userId!=undefined&&userId!=""){
+   		dialog.info("You are already logged in.")
+   		res.redirect('/welcome')
+   }
 
-   if(req.body.userId!=undefined&&req.body.userId!=""){
-   		userId=req.body.userId
-   		const users= await findUser(userId)
+   else if(req.body.userId!=undefined&&req.body.userId!=""){
+   		
+   		const users= await findUser(req.body.userId)
    			if(users.length==1){
+   				userId=req.body.userId
    				const password=req.body.password
 
    				const validate=await validatePassword(userId, password)
