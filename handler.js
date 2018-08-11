@@ -135,7 +135,7 @@ app.post('/create',async function(req, res){
 	if(userId!=undefined){
 		await saveExercise(userId, req.body.description, req.body.duration, req.body.date)
 		dialog.info("New record created")
-		res.end()
+		res.redirect('/new')
 
 	}else{
 		res.status(404)
