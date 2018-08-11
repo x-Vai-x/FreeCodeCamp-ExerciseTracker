@@ -84,6 +84,35 @@ module.exports.deleteExerciseById=async function(id, userID){
 
 }
 
+module.exports.updateExerciseDescription=async function(id,desciption, userID){
+	const exercise = await module.exports.getExerciseById(id, userID)
+	if(exercise!=undefined){
+		await ExerciseModel.findOneAndUpdate({id: id},{$set:{Description:description}},{ new: true })
+		return true
+	}else{
+		return false
+	}
+}
+
+module.exports.updateExerciseDuration=async function(id,duration, userID){
+	const exercise = await module.exports.getExerciseById(id, userID)
+	if(exercise!=undefined){
+		await ExerciseModel.findOneAndUpdate({id: id},{$set:{Duration:duration},{ new: true })
+		return true
+	}else{
+		return false
+	}
+}
+
+module.exports.updateExerciseDate=async function(id,date userID){
+	const exercise = await module.exports.getExerciseById(id, userID)
+	if(exercise!=undefined){
+		await ExerciseModel.findOneAndUpdate({id: id},{$set:{Date:date},{ new: true })
+		return true
+	}else{
+		return false
+	}
+}
 
 
 

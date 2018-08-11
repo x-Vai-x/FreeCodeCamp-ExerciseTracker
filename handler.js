@@ -6,7 +6,7 @@ const dialog = require('dialog')
 
 let show_exercises_from=0
 
-const {saveUser, findUser, saveExercise, findExercises, getExerciseById, validatePassword, deleteExerciseById } = require('./DB/DBMethods')
+const {saveUser, findUser, saveExercise, findExercises, getExerciseById, validatePassword, deleteExerciseById, updateExerciseDescription, updateExerciseDuration, updateExerciseDate} = require('./DB/DBMethods')
 
 
 app.use(express.static(path.resolve(__dirname+ '/public/')))
