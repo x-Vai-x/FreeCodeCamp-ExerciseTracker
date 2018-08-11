@@ -15,13 +15,14 @@
 
 			<main class="column">
 
-				<ul>
+
+				<ul class="column">
 					<% Exercises.map(
 							exercise =>{ %>
 								<section class="row">
 									<li><a href="/Exercise/<%=exercise._id %>" > <%= exercise.Description %></a></li>
 
-									<form action="/deleteExercise/<%=exercise._id%>" method=”post”>
+									<form action="/deleteExercise/<%=exercise._id%>" method=”get”>
 									<button id="deleteExercise">Delete</button>
 									</form>
 								</section>
@@ -30,6 +31,16 @@
 					) %>
 					
 				</ul>
+
+				<section class="row">
+					<form action='/nextExercise' method='get'>
+						<button>Next</button>
+					 </form>
+
+					 <form action='/previousExercise' method='get'>
+					 	<button>Previous</button>
+					 </form>
+				</section>
 
 			</main>
 

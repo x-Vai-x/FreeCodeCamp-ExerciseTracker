@@ -4,6 +4,8 @@ const path = require('path')
 
 const dialog = require('dialog')
 
+let show_exercises_from=0
+
 const {saveUser, findUser, saveExercise, findExercises, getExerciseById, validatePassword, deleteExerciseById } = require('./DB/DBMethods')
 
 
@@ -147,7 +149,7 @@ app.post('/create',async function(req, res){
 app.get('/myExercise', async function(req, res){
 	if(userId!=undefined){
 		
-		const exercises=await find10Exercises(0)
+		const exercises=await find10Exercises(show_exercises_from)
 		res.render('MyExercise', {Exercises: exercises})
 		
 	}else{
@@ -155,6 +157,37 @@ app.get('/myExercise', async function(req, res){
 		res.send("<h1>404 forbidden!</h1>")
 	}
 })
+
+app.get('/nextExercise', async function(req, res){
+	if(userId!=undefined){
+		const exercises=await findExercises(userId)
+		if(exercises.length>show_exercises_from+10){
+			show_exercises_from+=10
+			res.redirect('/myExercise')	
+		}
+		
+		
+	}else{
+		res.status(404)
+		res.send("<h1>404 forbidden!</h1>")
+	}
+})
+
+app.get('/previousExercise', async function(req, res){
+	if(userId!=undefined){
+		
+		if(show_exercises_from>=10){
+			show_exercises_from-=10
+			res.redirect('/myExercise')
+		}
+		
+		
+	}else{
+		res.status(404)
+		res.send("<h1>404 forbidden!</h1>")
+	}
+})
+
 
 app.get('/Exercise/:id', async function(req,res){
 
@@ -186,6 +219,7 @@ app.get('/deleteExercise/:id', async function(req,res){
 
 app.get('/logout', function(req,res){
 	userId=undefined
+	show_exercises_from=0
 	res.redirect('/')
 })
 
