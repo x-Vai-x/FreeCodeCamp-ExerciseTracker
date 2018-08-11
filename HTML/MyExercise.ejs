@@ -18,7 +18,14 @@
 				<ul>
 					<% Exercises.map(
 							exercise =>{ %>
-								<li><a href="/Exercise/<%=exercise._id %>" > <%= exercise.Description %></a></li>
+								<section class="row">
+									<li><a href="/Exercise/<%=exercise._id %>" > <%= exercise.Description %></a></li>
+
+									<form action="/deleteExercise/<%=exercise._id%>" method="get">
+									<button id="deleteExercise">Delete</button>
+									</form>
+								</section>
+								
 							<%}
 					) %>
 					

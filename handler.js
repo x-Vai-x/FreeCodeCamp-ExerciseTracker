@@ -170,10 +170,11 @@ app.get('/Exercise/:id', async function(req,res){
 
 })
 
-app.delete('/Exercise/:id', async function(req,res){
+app.get('/deleteExercise/:id', async function(req,res){
 
-	const deleted=await deleteExerciseById(req.body.id, userId)
+	const deleted=await deleteExerciseById(req.params.id, userId)
 	if(deleted){
+		dialog.info("Exercise deleted")
 		res.redirect('/myExercise')
 	}else{
 		res.status(404)
