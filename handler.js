@@ -174,7 +174,7 @@ app.delete('/Exercise/:id', async function(req,res){
 
 	const deleted=await deleteExerciseById(req.body.id, userId)
 	if(deleted){
-		res.redirect('/myExercse')
+		res.redirect('/myExercise')
 	}else{
 		res.status(404)
 		res.send("<h1>404 forbidden!</h1>")
