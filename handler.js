@@ -217,6 +217,8 @@ app.get('/deleteExercise/:id', async function(req,res){
 
 })
 
+
+
 app.get('/logout', function(req,res){
 	userId=undefined
 	show_exercises_from=0
@@ -232,11 +234,15 @@ app.get('/', function(req,res){
 	
 })
 
+
+
 async function find10Exercises(from){
 
 	const exercises=await findExercises(userId)
 	return exercises.slice(from, from+10)
 }
+
+
 
 
 
