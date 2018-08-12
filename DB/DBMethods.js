@@ -97,7 +97,7 @@ module.exports.updateExerciseDescription=async function(id,desciption, userID){
 module.exports.updateExerciseDuration=async function(id,duration, userID){
 	const exercise = await module.exports.getExerciseById(id, userID)
 	if(exercise!=undefined){
-		await ExerciseModel.findOneAndUpdate({id: id},{$set:{Duration:duration},{ new: true })
+		await ExerciseModel.findOneAndUpdate({id: id},{$set:{Duration:duration}},{ new: true })
 		return true
 	}else{
 		return false
