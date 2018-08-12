@@ -107,7 +107,7 @@ module.exports.updateExerciseDuration=async function(id,duration, userID){
 module.exports.updateExerciseDate=async function(id,date userID){
 	const exercise = await module.exports.getExerciseById(id, userID)
 	if(exercise!=undefined){
-		await ExerciseModel.findOneAndUpdate({id: id},{$set:{Date:date},{ new: true })
+		await ExerciseModel.findOneAndUpdate({id: id}, {$set:{Date:date}},{ new: true })
 		return true
 	}else{
 		return false

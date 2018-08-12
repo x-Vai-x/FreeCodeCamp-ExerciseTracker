@@ -5,6 +5,35 @@
 		<head>
 			<title>My Exercise </title>
 			<link rel="stylesheet" type="text/css" href="CSS/style.css">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+			<script>
+
+				$(document).ready(function(){
+					$('#editDesc').click(function(){
+						$('#descDialog').show()
+					})
+					$('#exitDescDialog').click(function(){
+						$('#descDialog').hide()
+					})
+
+					$('#editDur').click(function(){
+						$('#durDialog').show()
+					})
+					$('#exitDurialog').click(function(){
+						$('#durDialog').hide()
+					})
+
+					$('#editDate').click(function(){
+						$('#dateDialog').show()
+					})
+					$('#exitDateDialog').click(function(){
+						$('#dateDialog').hide()
+					})
+					
+				})
+			
+
+			</script>
 		</head>	
 
 		<body class="column">
@@ -22,6 +51,25 @@
 									<li> Description: &nbsp; <%= Exercise.Description %></li>
 									
 									<button id="editDesc">Edit</button>
+
+									<dialog id="descDialog">
+										<form class="column">
+											<section class="row">
+												<label for="desc">Desciption:</label>
+												<input type="text" id="description" name="description">
+											</section>
+											<section>
+												<input type="submit">
+											</section>
+
+										</form>
+
+										<section>
+											<button id="exitDescDialog">Exit</button>
+										</section>
+									</dialog>
+
+
 									
 								</section>
 								
@@ -29,6 +77,21 @@
 								<li> Duration: &nbsp; <%= Exercise.Duration %></li>
 								
 								<button id="editDur">Edit</button>
+
+								<dialog id="durDialog">
+										<form class="column">
+											<section class="row">
+												<label for="duration">Duration:</label>
+												<input type="number" id="duration" name="duration">
+											</section>
+											<section>
+												<input type="submit">
+											</section>
+										</form>
+											<section>
+												<button id="exitDurDialog">Exit</button>
+											</section>
+									</dialog>
 								
 								</section>
 								
@@ -36,6 +99,21 @@
 									<li> Date: &nbsp; <%= Exercise.Date %></li>
 									
 									<button id="editDate">Edit</button>
+
+									<dialog id="dateDialog">
+										<form class="column">
+											<section class="row">
+												<label for="date">Date:</label>
+												<input type="date" id="date" name="date">
+											</section>
+											<section>
+												<input type="submit">
+											</section>
+										</form>
+										<section>
+											<button id="exitDateDialog">Exit</button>
+										</section>
+									</dialog>
 									
 
 								</section>
