@@ -55,7 +55,7 @@ app.post('/welcome_new', async function(req,res){
    			if(user.length==0){
    				userId=req.body.userId
    				const password=req.body.password
-   				saveUser(userId, password)
+   				await saveUser(userId, password)
    				res.redirect('/welcome')
    			}else{
    				dialog.info("Name is already taken")
@@ -246,20 +246,20 @@ app.post('/editExerciseDescription', async function(req, res){
 		const update= await updateExerciseDescription(id, description, userId)
 
 		if(update){
-			dialog.info("description update")
-			res.redirect('/Exercise/id')
+			dialog.info("Description updated")
+			res.redirect('/Exercise/'+id)
 		}else{
 			res.status(404)
 			res.send("<h1>404 forbidden!</h1>")
 		}
 	}else{
 		dialog.info("Description cannot be blank")
-		res.redirect('/Exercise/id')
+		res.redirect('/Exercise/'+id)
 	}
 	
 })
 
-app.post('/editExerciseDuration',function(req,res){
+app.post('/editExerciseDuration',async function(req,res){
 	const duration = req.body.duration
 	const id=req.body.id
 
@@ -271,19 +271,19 @@ app.post('/editExerciseDuration',function(req,res){
 
 		if(update){
 			dialog.info("Duration updated")
-			res.redirect('/Exercise/id')
+			res.redirect('/Exercise/'+id)
 		}else{
 			res.status(404)
 			res.send("<h1>404 forbidden!</h1>")
 		}
 	}else{
 		dialog.info("Duration cannot be blank")
-		res.redirect('/Exercise/id')
+		res.redirect('/Exercise/'+id)
 	}
 	
 })
 
-app.post('/editExerciseDate', function(req, res){
+app.post('/editExerciseDate', async function(req, res){
 	const date=req.body.date
 	const id=req.body.id
 
@@ -295,14 +295,14 @@ app.post('/editExerciseDate', function(req, res){
 
 		if(update){
 			dialog.info("Date updated")
-			res.redirect('/Exercise/id')
+			res.redirect('/Exercise/'+id)
 		}else{
 			res.status(404)
 			res.send("<h1>404 forbidden!</h1>")
 		}
 	}else{
 		dialog.info("Date cannot be blank")
-		res.redirect('/Exercise/id')
+		res.redirect('/Exercise/'+id)
 	}
 	
 })

@@ -84,10 +84,10 @@ module.exports.deleteExerciseById=async function(id, userID){
 
 }
 
-module.exports.updateExerciseDescription=async function(id,desciption, userID){
+module.exports.updateExerciseDescription=async function(id,description, userID){
 	const exercise = await module.exports.getExerciseById(id, userID)
 	if(exercise!=undefined){
-		await ExerciseModel.findOneAndUpdate({id: id},{$set:{Description:description}},{ new: true })
+		await ExerciseModel.findOneAndUpdate({_id: id},{$set: {Description:description}},{ new: true }).exec()
 		return true
 	}else{
 		return false
@@ -97,7 +97,7 @@ module.exports.updateExerciseDescription=async function(id,desciption, userID){
 module.exports.updateExerciseDuration=async function(id,duration, userID){
 	const exercise = await module.exports.getExerciseById(id, userID)
 	if(exercise!=undefined){
-		await ExerciseModel.findOneAndUpdate({id: id},{$set:{Duration:duration}},{ new: true })
+		await ExerciseModel.findOneAndUpdate({_id: id},{$set:{Duration:duration}},{ new: true }).exec()
 		return true
 	}else{
 		return false
@@ -107,7 +107,7 @@ module.exports.updateExerciseDuration=async function(id,duration, userID){
 module.exports.updateExerciseDate=async function(id,date, userID){
 	const exercise = await module.exports.getExerciseById(id, userID)
 	if(exercise!=undefined){
-		await ExerciseModel.findOneAndUpdate({id: id}, {$set:{Date:date}},{ new: true })
+		await ExerciseModel.findOneAndUpdate({_id: id}, {$set:{Date:date}},{ new: true }).exec()
 		return true
 	}else{
 		return false
