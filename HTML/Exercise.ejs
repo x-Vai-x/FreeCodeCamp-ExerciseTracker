@@ -53,10 +53,11 @@
 									<button id="editDesc">Edit</button>
 
 									<dialog id="descDialog">
-										<form class="column">
+										<form class="column" action="/editExerciseDescription" method="post" >
 											<section class="row">
 												<label for="desc">Desciption:</label>
 												<input type="text" id="description" name="description">
+												<input type="hidden" name="id" value="<%= Exercise.id %>">
 											</section>
 											<section>
 												<input type="submit">
@@ -79,11 +80,13 @@
 								<button id="editDur">Edit</button>
 
 								<dialog id="durDialog">
-										<form class="column">
+										<form class="column" action="/editExerciseDuration" method="post" >
 											<section class="row">
 												<label for="duration">Duration:</label>
 												<input type="number" id="duration" name="duration">
+												<input type="hidden" name="id" value="<%= Exercise.id %>">
 											</section>
+											
 											<section>
 												<input type="submit">
 											</section>
@@ -101,10 +104,11 @@
 									<button id="editDate">Edit</button>
 
 									<dialog id="dateDialog">
-										<form class="column">
+										<form class="column" action="/editExerciseDate" method="post" >
 											<section class="row">
 												<label for="date">Date:</label>
 												<input type="date" id="date" name="date">
+												<input type="hidden" name="id" value="<%= Exercise.id %>">
 											</section>
 											<section>
 												<input type="submit">

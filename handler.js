@@ -234,6 +234,32 @@ app.get('/', function(req,res){
 	
 })
 
+app.post('/editExerciseDescription', function(req, res){
+	const description=req.body.description
+	const id = req.body.id
+
+	console.log(description)
+	console.log(id)
+	res.send("description:"+description+ " id:"+id)
+})
+
+app.post('/editExerciseDuration',function(req,res){
+	const duration = req.body.duration
+	const id=req.body.id
+
+	console.log(duration)
+	console.log(id)
+	res.send("duration:"+duration+ " id:"+id)
+})
+
+app.post('/editExerciseDate', function(req, res){
+	const date=req.body.date
+	const id=req.body.id
+
+	console.log(date)
+	console.log(id)
+	res.send("date:"+date+ " id:"+id)
+})
 
 
 async function find10Exercises(from){
