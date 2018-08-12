@@ -86,12 +86,13 @@ app.post('/welcome_existing', async function(req,res){
    		
    		const users= await findUser(req.body.userId)
    			if(users.length==1){
-   				userId=req.body.userId
+   				
    				const password=req.body.password
 
-   				const validate=await validatePassword(userId, password)
+   				const validate=await validatePassword(req.body.userId, password)
 
    				if(validate){
+   					userId=req.body.userId
    					res.redirect('/welcome')
    				}else{
    					dialog.info("Incorrect password.")
