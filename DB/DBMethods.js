@@ -61,7 +61,6 @@ module.exports.findExercises=async function(userID){
 module.exports.getExerciseById=async function(id, userID){
 	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
 	const exercise = await ExerciseModel.findById(id).populate('User')
-	console.log(exercise)
 
 
 	if(exercise.User.UserId!=userID){

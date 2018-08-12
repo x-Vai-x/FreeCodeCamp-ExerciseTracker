@@ -239,8 +239,7 @@ app.post('/editExerciseDescription', async function(req, res){
 	const description=req.body.description
 	const id = req.body.id
 
-	console.log(description)
-	console.log(id)
+	
 
 	if(description!=undefined&&description!=""){
 		const update= await updateExerciseDescription(id, description, userId)
@@ -263,8 +262,7 @@ app.post('/editExerciseDuration',async function(req,res){
 	const duration = req.body.duration
 	const id=req.body.id
 
-	console.log(duration)
-	console.log(id)
+	
 
 	if(duration!=undefined){
 		const update= await updateExerciseDuration(id, duration, userId)
@@ -287,8 +285,7 @@ app.post('/editExerciseDate', async function(req, res){
 	const date=req.body.date
 	const id=req.body.id
 
-	console.log(date)
-	console.log(id)
+	
 
 	if(date!=undefined){
 		const update= await updateExerciseDate(id, date, userId)
