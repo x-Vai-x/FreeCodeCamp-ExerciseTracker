@@ -235,13 +235,28 @@ app.get('/', function(req,res){
 	
 })
 
-app.post('/editExerciseDescription', function(req, res){
+app.post('/editExerciseDescription', async function(req, res){
 	const description=req.body.description
 	const id = req.body.id
 
 	console.log(description)
 	console.log(id)
-	res.send("description:"+description+ " id:"+id)
+
+	if(description!=undefined&&description!=""){
+		const update= await updateExerciseDescription(id, description, userId)
+
+		if(update){
+			dialog.info("description update")
+			res.redirect('/Exercise/id')
+		}else{
+			res.status(404)
+			res.send("<h1>404 forbidden!</h1>")
+		}
+	}else{
+		dialog.info("Description cannot be blank")
+		res.redirect('/Exercise/id')
+	}
+	
 })
 
 app.post('/editExerciseDuration',function(req,res){
@@ -250,7 +265,22 @@ app.post('/editExerciseDuration',function(req,res){
 
 	console.log(duration)
 	console.log(id)
-	res.send("duration:"+duration+ " id:"+id)
+
+	if(duration!=undefined){
+		const update= await updateExerciseDuration(id, duration, userId)
+
+		if(update){
+			dialog.info("Duration updated")
+			res.redirect('/Exercise/id')
+		}else{
+			res.status(404)
+			res.send("<h1>404 forbidden!</h1>")
+		}
+	}else{
+		dialog.info("Duration cannot be blank")
+		res.redirect('/Exercise/id')
+	}
+	
 })
 
 app.post('/editExerciseDate', function(req, res){
@@ -259,7 +289,22 @@ app.post('/editExerciseDate', function(req, res){
 
 	console.log(date)
 	console.log(id)
-	res.send("date:"+date+ " id:"+id)
+
+	if(date!=undefined){
+		const update= await updateExerciseDate(id, date, userId)
+
+		if(update){
+			dialog.info("Date updated")
+			res.redirect('/Exercise/id')
+		}else{
+			res.status(404)
+			res.send("<h1>404 forbidden!</h1>")
+		}
+	}else{
+		dialog.info("Date cannot be blank")
+		res.redirect('/Exercise/id')
+	}
+	
 })
 
 
