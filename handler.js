@@ -4,6 +4,8 @@ const path = require('path')
 
 const dialog = require('dialog')
 
+require('dotenv').config()
+
 let show_exercises_from=0
 
 const {saveUser, findUser, saveExercise, findExercises, getExerciseById, validatePassword, deleteExerciseById, updateExerciseDescription, updateExerciseDuration, updateExerciseDate} = require('./DB/DBMethods')

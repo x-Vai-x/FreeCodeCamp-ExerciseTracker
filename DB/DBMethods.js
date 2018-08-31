@@ -4,14 +4,14 @@ const {UserModel} = require('./Schemas/UserSchema')
 const {ExerciseModel} = require('./Schemas/ExerciseSchema')
 
 module.exports.saveUser= async function(userID, password){
-	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
+	await mongoose.connect(process.env.DB).then(console.log("db connected")).catch(err=>{console.log(err)})
 	const user=new UserModel({UserId: userID, Password: password, Exercises: []})
 	await user.save()
 	console.log("user saved")
 }
 
 module.exports.findUser = async function(userID){
-	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
+	await mongoose.connect(process.env.DB).then(console.log("db connected")).catch(err=>{console.log(err)})
 	const users= await UserModel.find({UserId: userID}).populate('Exercises')
 	return users
 }
@@ -28,7 +28,7 @@ module.exports.validatePassword = async function(userID, password){
 
 
 module.exports.saveExercise=async function(userID, description, duration, date){
-	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
+	await mongoose.connect(process.env.DB).then(console.log("db connected")).catch(err=>{console.log(err)})
 
 	
 		
@@ -52,14 +52,14 @@ module.exports.saveExercise=async function(userID, description, duration, date){
 
 
 module.exports.findExercises=async function(userID){
-	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
+	await mongoose.connect(process.env.DB).then(console.log("db connected")).catch(err=>{console.log(err)})
 
 	const user=await UserModel.find({UserId: userID}).populate('Exercises')
 	return user[0].Exercises
 }
 
 module.exports.getExerciseById=async function(id, userID){
-	await mongoose.connect('mongodb://localhost:27017/FreeCodeCampProject').then(console.log("db connected")).catch(err=>{console.log(err)})
+	await mongoose.connect(process.env.DB).then(console.log("db connected")).catch(err=>{console.log(err)})
 	const exercise = await ExerciseModel.findById(id).populate('User')
 
 
