@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
-
+const bcrypt=require('bcrypt')
 const {UserModel} = require('./Schemas/UserSchema')
 const {ExerciseModel} = require('./Schemas/ExerciseSchema')
 
 module.exports.saveUser= async function(userID, password){
 	await mongoose.connect(process.env.DB).then(console.log("db connected")).catch(err=>{console.log(err)})
-	const user=new UserModel({UserId: userID, Password: password, Exercises: []})
+	const user=new UserModel({UserId: userID, Password: bcrypt.hashSync(req.body.password, 12), Exercises: []})
 	await user.save()
 	console.log("user saved")
 }
@@ -20,10 +20,8 @@ module.exports.validatePassword = async function(userID, password){
 
 	const users=await module.exports.findUser(userID)
 	const user=users[0]
-	return user.Password==password
+	return bcrypt.compareSync(password, user.password)
 }
-
-
 
 
 
