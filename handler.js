@@ -18,34 +18,65 @@ app.set('views', path.resolve(__dirname+'/HTML'))
 
 const bodyParser=require('body-parser')
 
+const session=require('express-session')
+const cookieParser = require('cookie-parser')
+
 app.use( bodyParser.json() )       
 app.use(bodyParser.urlencoded({    
   extended: true
 }))
 
-let userId=undefined
+app.use(cookieParser())
 
-app.get('/register',function(req, res) {
+app.use(session({
+    key: 'user_sid',
+    secret: 'somerandonstuffs',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: 600000
+    }
+}))
 
-	if(userId==undefined){
-		res.sendFile(path.resolve(__dirname+'/HTML/NewUser.html'))
-	}else{
-		res.redirect('/welcome')
-	}
+app.use((req, res, next) => {
+    if (req.cookies.user_sid && !req.session.user) {
+        res.clearCookie('user_sid')       
+    }
+    
+   
+    next()
 })
 
-app.get('/login', function(req,res){
-	if(userId==undefined){
+const sessionChecker = (req, res, next) => {
+    if (req.session.user && req.cookies.user_sid) {
+        res.redirect('/welcome')
+    } else {
+        next()
+    }    
+}
+
+
+
+
+
+app.get('/register',sessionChecker, function(req, res) {
+
+	
+		res.sendFile(path.resolve(__dirname+'/HTML/NewUser.html'))
+
+	
+})
+
+app.get('/login', sessionChecker, function(req,res){
+	
 		res.sendFile(path.resolve(__dirname+'/HTML/ExistingUser.html'))
-	}else{
-		res.redirect('/welcome')
-	}
+	
 	
 })
 
 app.post('/welcome_new', async function(req,res){
 	
- 	if(userId!=undefined&&userId!=""){
+ 	if(req.session.user!=undefined){
    		dialog.info("You are already logged in.")
    		res.redirect('/welcome')
    	}
@@ -55,9 +86,12 @@ app.post('/welcome_new', async function(req,res){
    		
    		const user = await findUser(req.body.userId)
    			if(user.length==0){
-   				userId=req.body.userId
+   				const userId=req.body.userId
    				const password=req.body.password
-   				await saveUser(userId, password)
+   				const user = await saveUser(userId, password)
+
+   				req.session.user=user
+   				
    				res.redirect('/welcome')
    			}else{
    				dialog.info("Name is already taken")
@@ -79,7 +113,7 @@ app.post('/welcome_new', async function(req,res){
 
 app.post('/welcome_existing', async function(req,res){
    
-   if(userId!=undefined&&userId!=""){
+   if(req.session.user!=undefined){
    		dialog.info("You are already logged in.")
    		res.redirect('/welcome')
    }
@@ -88,13 +122,16 @@ app.post('/welcome_existing', async function(req,res){
    		
    		const users= await findUser(req.body.userId)
    			if(users.length==1){
-   				
+   				const user=users[0]
    				const password=req.body.password
 
    				const validate=await validatePassword(req.body.userId, password)
 
    				if(validate){
-   					userId=req.body.userId
+   					
+   					req.session.user=user
+   					
+   					
    					res.redirect('/welcome')
    				}else{
    					dialog.info("Incorrect password.")
@@ -117,8 +154,9 @@ app.post('/welcome_existing', async function(req,res){
 
 app.get('/welcome',function(req, res){
 
-   if(userId!=undefined&&userId!=""){
+   if(req.session.user!=undefined&&req.cookies.user_sid){
 		res.sendFile(path.resolve(__dirname+'/HTML/Welcome.html'))
+		console.log(req.cookies.user_sid)
 	}	
 	else{
 		res.status("404")
@@ -127,7 +165,7 @@ app.get('/welcome',function(req, res){
 })
 
 app.get('/new', function(req, res){
-	if(userId!=undefined){
+	if(req.session.user!=undefined){
 		res.sendFile(path.resolve(__dirname+'/HTML/NewExercise.html'))
 	}else{
 		res.status("404")
@@ -137,8 +175,8 @@ app.get('/new', function(req, res){
 })
 
 app.post('/create',async function(req, res){
-	if(userId!=undefined){
-		await saveExercise(userId, req.body.description, req.body.duration, req.body.date)
+	if(req.session.user!=undefined){
+		await saveExercise(req.session.user.UserId, req.body.description, req.body.duration, req.body.date)
 		dialog.info("New record created")
 		res.redirect('/new')
 
@@ -150,9 +188,9 @@ app.post('/create',async function(req, res){
 })
 
 app.get('/myExercise', async function(req, res){
-	if(userId!=undefined){
+	if(req.session.user!=undefined){
 		
-		const exercises=await find10Exercises(show_exercises_from)
+		const exercises=await find10Exercises(show_exercises_from, req.session.user.UserId)
 		res.render('MyExercise', {Exercises: exercises})
 		
 	}else{
@@ -162,8 +200,8 @@ app.get('/myExercise', async function(req, res){
 })
 
 app.get('/nextExercise', async function(req, res){
-	if(userId!=undefined){
-		const exercises=await findExercises(userId)
+	if(req.session.user!=undefined){
+		const exercises=await findExercises(req.session.user.UserId)
 		if(exercises.length>show_exercises_from+10){
 			show_exercises_from+=10
 			res.redirect('/myExercise')	
@@ -177,7 +215,7 @@ app.get('/nextExercise', async function(req, res){
 })
 
 app.get('/previousExercise', async function(req, res){
-	if(userId!=undefined){
+	if(req.session.user!=undefined){
 		
 		if(show_exercises_from>=10){
 			show_exercises_from-=10
@@ -194,8 +232,8 @@ app.get('/previousExercise', async function(req, res){
 
 app.get('/Exercise/:id', async function(req,res){
 
-	const exercise=await getExerciseById(req.params.id, userId)
-	if(userId!=undefined && exercise!=undefined){
+	const exercise=await getExerciseById(req.params.id, req.session.user.UserId)
+	if(req.session.user!=undefined && exercise!=undefined){
 		
 		res.render('Exercise', {Exercise: exercise})
 	}else{
@@ -208,7 +246,7 @@ app.get('/Exercise/:id', async function(req,res){
 
 app.get('/deleteExercise/:id', async function(req,res){
 
-	const deleted=await deleteExerciseById(req.params.id, userId)
+	const deleted=await deleteExerciseById(req.params.id, req.session.user.UserId)
 	if(deleted){
 		dialog.info("Exercise deleted")
 		res.redirect('/myExercise')
@@ -223,19 +261,24 @@ app.get('/deleteExercise/:id', async function(req,res){
 
 
 app.get('/logout', function(req,res){
-	userId=undefined
-	show_exercises_from=0
-	res.redirect('/')
-})
-
-app.get('/', function(req,res){
-	if(userId==undefined){
-		res.sendFile(path.resolve(__dirname+'/HTML/Index.html'))
-	}else{
-		res.redirect('/welcome')
+	if(req.session.user!=undefined && req.cookies.user_sid){
+		
+		res.clearCookie('user_sid')
+		show_exercises_from=0
+		
+		res.redirect('/')
 	}
 	
 })
+
+app.get('/', sessionChecker, function(req,res){
+	
+		res.sendFile(path.resolve(__dirname+'/HTML/Index.html'))
+	
+	
+})
+
+
 
 app.post('/editExerciseDescription', async function(req, res){
 	const description=req.body.description
@@ -244,7 +287,7 @@ app.post('/editExerciseDescription', async function(req, res){
 	
 
 	if(description!=undefined&&description!=""){
-		const update= await updateExerciseDescription(id, description, userId)
+		const update= await updateExerciseDescription(id, description, req.session.user.UserId)
 
 		if(update){
 			dialog.info("Description updated")
@@ -267,7 +310,7 @@ app.post('/editExerciseDuration',async function(req,res){
 	
 
 	if(duration!=undefined){
-		const update= await updateExerciseDuration(id, duration, userId)
+		const update= await updateExerciseDuration(id, duration, req.session.user.UserId)
 
 		if(update){
 			dialog.info("Duration updated")
@@ -290,7 +333,7 @@ app.post('/editExerciseDate', async function(req, res){
 	
 
 	if(date!=undefined){
-		const update= await updateExerciseDate(id, date, userId)
+		const update= await updateExerciseDate(id, date, req.session.user.UserId)
 
 		if(update){
 			dialog.info("Date updated")
@@ -307,7 +350,7 @@ app.post('/editExerciseDate', async function(req, res){
 })
 
 
-async function find10Exercises(from){
+async function find10Exercises(from, userId){
 
 	const exercises=await findExercises(userId)
 	return exercises.slice(from, from+10)
