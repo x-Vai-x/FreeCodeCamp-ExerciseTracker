@@ -5,22 +5,24 @@ const {ExerciseModel} = require('./Schemas/ExerciseSchema')
 
 module.exports.saveUser= async function(userID, password){
 	await mongoose.connect(process.env.DB).then(console.log("db connected")).catch(err=>{console.log(err)})
-	const user=new UserModel({UserId: userID, Password: bcrypt.hashSync(req.body.password, 12), Exercises: []})
-	await user.save()
+	const hash=await bcrypt.hash(password, 12).catch("can't hash password")
+	const user=new UserModel({UserId: userID, Password: hash, Exercises: []})
+	await user.save().catch("can't save user")
 	console.log("user saved")
 }
 
 module.exports.findUser = async function(userID){
 	await mongoose.connect(process.env.DB).then(console.log("db connected")).catch(err=>{console.log(err)})
-	const users= await UserModel.find({UserId: userID}).populate('Exercises')
+	const users= await UserModel.find({UserId: userID}).populate('Exercises').catch("can't find user")
 	return users
 }
 
 module.exports.validatePassword = async function(userID, password){
 
-	const users=await module.exports.findUser(userID)
+	const users=await module.exports.findUser(userID).catch("can't find user")
 	const user=users[0]
-	return bcrypt.compareSync(password, user.password)
+	const passwordMatches= await bcrypt.compare(password, user.Password).catch("can't compare hash")
+	return passwordMatches
 }
 
 
